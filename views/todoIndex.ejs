@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo-App</title>
+</head>
+<body>
+    <div class="Container">
+        <h1>Todo-App</h1>
+         <form action="/todo" method="POST">
+             <input type="text" name="item" id="item" placeholder="Item Name...." required />
+             <button type="submit" name="button">add</button>
+         </form>
+   </div>
+   
+    <ul>
+        <% todos.forEach(function(todo){ %>
+         <li><%= todo.item %></li>
+         <a class="delete" data-doc="<%= todo._id %>">delete</a>
+         <% }); %>
+     </ul>
+     <script>
+        const selectDelItem = document.querySelector('a.delete');
+        selectDelItem.addEventListener('click', (e)=>{
+            const endpoint = `/todo/${selectDelItem.dataset.doc}`;
+            fetch(endpoint, {
+                method:'DELETE'
+            })
+            .then((res)=>res.json())
+            .then((result)=>window.location.href = result.redirect)
+            .catch((err)=>console.log(err));
+        });
+    </script>
+</body>
+</html>
